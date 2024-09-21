@@ -24,7 +24,7 @@ class BasicDataset(Dataset):
         self.patch_size = patch_size
         self.patch_num_per_image = patch_num_per_image
         # get selected training data based on the current fold
-        if fold is not 0:
+        if fold != 0:
             tfolds = list(set([1, 2, 3]) - set([fold]))
             logging.info(f'Training process will use {max_trdata} training images randomly selected from folds {tfolds}')
             files = loadmat(join('..', 'folds', 'fold%d_.mat' % fold))
@@ -35,7 +35,7 @@ class BasicDataset(Dataset):
                 temp_files = glob(imgs_dir + files[i][0][0])
                 for file in temp_files:
                     self.imgfiles.append(file)
-        elif fold is 0:
+        elif fold == 0:
             logging.info(f'Training process will use {max_trdata} training images randomly selected from all training data')
             logging.info('Loading training images information...')
             self.imgfiles = [join(imgs_dir, file) for file in listdir(imgs_dir)
@@ -43,7 +43,7 @@ class BasicDataset(Dataset):
         else:
             logging.info(f'There is no fold {fold}! Training process will use all training data.')
 
-        if max_trdata is not 0 and len(self.imgfiles) > max_trdata:
+        if max_trdata != 0 and len(self.imgfiles) > max_trdata:
             random.shuffle(self.imgfiles)
             self.imgfiles = self.imgfiles[0:max_trdata]
         logging.info(f'Creating dataset with {len(self.imgfiles)} examples')
@@ -68,7 +68,7 @@ class BasicDataset(Dataset):
         return img_trans
 
     def __getitem__(self, i):
-        gt_ext = ('G_AS.png', 'T_AS.png', 'S_AS.png')
+        gt_ext = ('G_AS.jpg', 'T_AS.jpg', 'S_AS.jpg')
         img_file = self.imgfiles[i]
         in_img = Image.open(img_file)
         # get image size
