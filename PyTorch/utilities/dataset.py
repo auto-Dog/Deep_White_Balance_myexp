@@ -68,7 +68,7 @@ class BasicDataset(Dataset):
         return img_trans
 
     def __getitem__(self, i):
-        gt_ext = ('G_AS.jpg', 'T_AS.jpg', 'S_AS.jpg')
+        gt_ext = ('G_AS.png', 'T_AS.jpg', 'S_AS.jpg')
         img_file = self.imgfiles[i]
         in_img = Image.open(img_file)
         # get image size
@@ -78,7 +78,8 @@ class BasicDataset(Dataset):
         base_name = ''
         for i in range(len(parts) - 2):
             base_name = base_name + parts[i] + '_'
-        gt_awb_file = base_name + gt_ext[0]
+        gt_base_name = base_name.replace('deep-awb-1','awb1-gt')    # only use on my kaggle dataset
+        gt_awb_file = gt_base_name + gt_ext[0]
         awb_img = Image.open(gt_awb_file)
         gt_t_file = base_name + gt_ext[1]
         t_img = Image.open(gt_t_file)
